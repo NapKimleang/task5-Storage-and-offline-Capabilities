@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouncing Ball Game</title>
+    <style>
+        canvas {
+            border: 1px solid #000;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Bouncing Ball Game</h1>
+    <canvas id="gameCanvas" width="500" height="400"></canvas>
+
+    <script>
+        var canvas = document.getElementById('gameCanvas');
+        var ctx = canvas.getContext('2d');
+
+        var ball = {
+            x: 50,
+            y: 50,
+            radius: 20,
+            dx: 2, // change in x (speed)
+            dy: 2, // change in y (speed)
+            color: 'blue'
+        };
+
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.fillStyle = ball.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function update() {
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            drawBall();
+
+            // Update ball position
+            ball.x += ball.dx;
+            ball.y += ball.dy;
+
+            // Check for collision with walls
+            if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
+                ball.dx = -ball.dx; // Reverse direction
+                changeColor();
+            }
+
+            if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+                ball.dy = -ball.dy; // Reverse direction
+                changeColor();
+            }
+
+            requestAnimationFrame(update); // Loop the update function
+        }
+
+        function changeColor() {
+            // Change ball color to a random color
+            ball.color = 'hsl(' + Math.random() * 360 + ', 100%, 50%)';
+        }
+
+        // Start the animation
+        update();
+    </script>
+
+</body>
+</html>
